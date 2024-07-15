@@ -1,11 +1,10 @@
 import React from 'react'
 import { View, Text } from 'react-native'
+import ExpensesOutput from '../component/ExpensesOutput'
 
 const AllExpensesScreen = () => {
   return (
-    <Text>
-AllExpensesScreen
-    </Text>
+      <ExpensesOutput period={'Total'}/>
   )
 }
 
