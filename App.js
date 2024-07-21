@@ -9,6 +9,7 @@ import ManageExpenseScreen from './screens/ManageExpenseScreen';
 import { Colors } from './variables/colors';
 import {Ionicons} from '@expo/vector-icons'
 import IconButton from './UI/IconButton';
+import ExpenseContextProvider from './store/expenses-context';
 
 const Stack = createNativeStackNavigator()
 const BottomTab = createBottomTabNavigator()
@@ -73,6 +74,8 @@ export default function App() {
   return (
     <>
     <StatusBar style='light' />
+    <ExpenseContextProvider>
+
       <NavigationContainer>
         <Stack.Navigator
         screenOptions={{
@@ -95,8 +98,9 @@ export default function App() {
           }}
           />
 
-        </Stack.Navigator>
-      </NavigationContainer>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ExpenseContextProvider>
     </>
   );
 }

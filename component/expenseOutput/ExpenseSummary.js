@@ -1,6 +1,6 @@
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
-import { Colors } from '../variables/colors'
+import { Colors } from '../../variables/colors'
 
 const ExpenseSummary = ({period, expenses}) => {
   const expenseSTotal = expenses.reduce((sum, expense) => {

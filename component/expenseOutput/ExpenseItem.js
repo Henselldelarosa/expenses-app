@@ -1,7 +1,7 @@
 import React from 'react'
 import {Pressable, View, Text, StyleSheet} from 'react-native'
-import { Colors } from '../variables/colors'
-import { getFormateedDate } from '../util/date'
+import { Colors } from '../../variables/colors'
+import { getFormateedDate } from '../../util/date'
 import { useNavigation } from '@react-navigation/native'
 
 const ExpenseItem = ({id, date, description, amount}) => {
