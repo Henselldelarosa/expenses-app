@@ -11,6 +11,8 @@ const ManageExpenseScreen = ({route, navigation}) => {
 
   const editedExpenseId = route.params?.expenseId
 
+  const expectedExpense = expensesCtx.expenses.find((expense) => expense.id === editedExpenseId)
+
   const isEditing = !!editedExpenseId
 
   useLayoutEffect(() => {
@@ -29,36 +31,24 @@ const ManageExpenseScreen = ({route, navigation}) => {
     navigation.goBack()
   }
 
-  const handleConfirm = () => {
+  const handleConfirm = (expenseData) => {
     if(isEditing){
-      expensesCtx.updateExpense(
-        editedExpenseId,
-        {
-
-        description: 'Test!!!',
-        amount: 19.99,
-        date: new Date('2024-07-20')
-      })
+      expensesCtx.updateExpense(editedExpenseId, expenseData)
 
     }else{
-
-      expensesCtx.addExpense({
-        description: 'Test',
-        amount: 19.99,
-        date: new Date('2024-07-19')
-      })
+      expensesCtx.addExpense(expenseData)
     }
     navigation.goBack()
   }
 
   return (
     <View style={styles.container}>
-          <ExpenseForm/>
-
-      <View style={styles.buttons}>
-        <Button mode={'flat'} onPress={handleCancel} style={styles.button}>Cancel</Button>
-        <Button style={styles.button} onPress={handleConfirm}>{isEditing ? 'Update' : 'Add'}</Button>
-      </View>
+          <ExpenseForm
+          submitLabel={isEditing ? 'Update' : 'Add'}
+          onCancel={handleCancel}
+          onSubmit={handleConfirm}
+          defaultValue={expectedExpense}
+          />
 
       {isEditing &&(
 
@@ -82,17 +72,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding:24,
     backgroundColor: Colors.colors.primary800
-  },
-
-  buttons:{
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
-  button:{
-    minWidth: 120,
-    marginHorizontal: 8
   },
 
   deleteContainer:{
