@@ -5,6 +5,7 @@ import { Colors } from '../variables/colors'
 import Button from '../util/Button'
 import { ExpenseContext } from '../store/expenses-context'
 import ExpenseForm from '../component/manageExpense/ExpenseForm'
+import { storeExpense } from '../util/http'
 
 const ManageExpenseScreen = ({route, navigation}) => {
   const expensesCtx = useContext(ExpenseContext)
@@ -35,8 +36,10 @@ const ManageExpenseScreen = ({route, navigation}) => {
     if(isEditing){
       expensesCtx.updateExpense(editedExpenseId, expenseData)
 
+
     }else{
-      expensesCtx.addExpense(expenseData)
+      storeExpense(expenseData)
+      expensesCtx.addExpense({...expenseData, id: id})
     }
     navigation.goBack()
   }
