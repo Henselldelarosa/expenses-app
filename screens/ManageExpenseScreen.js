@@ -5,7 +5,7 @@ import { Colors } from '../variables/colors'
 import Button from '../util/Button'
 import { ExpenseContext } from '../store/expenses-context'
 import ExpenseForm from '../component/manageExpense/ExpenseForm'
-import { storeExpense } from '../util/http'
+import { storeExpense,updatedExpenses, deleteExpenses } from '../util/http'
 
 const ManageExpenseScreen = ({route, navigation}) => {
   const expensesCtx = useContext(ExpenseContext)
@@ -23,8 +23,9 @@ const ManageExpenseScreen = ({route, navigation}) => {
   },[navigation,isEditing])
 
 
-  const handleDelete = () => {
+  const handleDelete = async() => {
     expensesCtx.deleteExpense(editedExpenseId)
+    await deleteExpenses(editedExpenseId)
     navigation.goBack()
   }
 
@@ -32,9 +33,10 @@ const ManageExpenseScreen = ({route, navigation}) => {
     navigation.goBack()
   }
 
-  const handleConfirm = (expenseData) => {
+  const handleConfirm = async (expenseData) => {
     if(isEditing){
       expensesCtx.updateExpense(editedExpenseId, expenseData)
+      await updatedExpenses(editedExpenseId, expenseData)
 
 
     }else{
