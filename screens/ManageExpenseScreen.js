@@ -1,11 +1,11 @@
-import React, {useContext, useLayoutEffect} from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, {useContext, useLayoutEffect, useState} from 'react'
+import { View, StyleSheet } from 'react-native'
 import IconButton from '../UI/IconButton'
 import { Colors } from '../variables/colors'
-import Button from '../util/Button'
 import { ExpenseContext } from '../store/expenses-context'
 import ExpenseForm from '../component/manageExpense/ExpenseForm'
 import { storeExpense,updatedExpenses, deleteExpenses } from '../util/http'
+import LoadingOverlay from '../UI/LoadingOverlay'
 
 const ManageExpenseScreen = ({route, navigation}) => {
   const expensesCtx = useContext(ExpenseContext)
@@ -16,6 +16,8 @@ const ManageExpenseScreen = ({route, navigation}) => {
 
   const isEditing = !!editedExpenseId
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: isEditing ? "Edit Expenses" : "Add Expenses"
@@ -24,6 +26,7 @@ const ManageExpenseScreen = ({route, navigation}) => {
 
 
   const handleDelete = async() => {
+    setIsSubmitting(true)
     expensesCtx.deleteExpense(editedExpenseId)
     await deleteExpenses(editedExpenseId)
     navigation.goBack()
@@ -34,16 +37,21 @@ const ManageExpenseScreen = ({route, navigation}) => {
   }
 
   const handleConfirm = async (expenseData) => {
+    setIsSubmitting(true)
     if(isEditing){
       expensesCtx.updateExpense(editedExpenseId, expenseData)
       await updatedExpenses(editedExpenseId, expenseData)
-
+      setIsSubmitting(false)
 
     }else{
       storeExpense(expenseData)
       expensesCtx.addExpense({...expenseData, id: id})
     }
     navigation.goBack()
+  }
+
+  if(isSubmitting) {
+    return <LoadingOverlay/>
   }
 
   return (
